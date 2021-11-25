@@ -15,9 +15,9 @@
 		"url": "https://github.com/nadhirxz/file-upload.git"
 	},
 	"dependencies": {
-		"axios": "^0.24.0",
 		"commander": "^8.3.0",
-		"form-data": "^4.0.0"
+		"form-data": "^4.0.0",
+		"got": "^11.8.3"
 	},
 	"devDependencies": {
 		"@types/node": "^16.11.10",

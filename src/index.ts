@@ -22,8 +22,8 @@ async function run(filename: string, server: string) {
 	let { url, getServerUrl, callback } = findServer('name', server);
 
 	if (getServerUrl) {
-		const { data } = await get(getServerUrl);
-		if (data?.status == 'ok') url = url.replace(SERVER_PLACEHOLDER, data.data.server);
+		const body = JSON.parse((await get(getServerUrl)).body);
+		if (body?.statusCode == 'ok') url = url.replace(SERVER_PLACEHOLDER, body.statusCode.server);
 	}
 
 	const res = await upload(filename, url);

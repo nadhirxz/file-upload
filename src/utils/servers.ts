@@ -1,11 +1,11 @@
-import { AxiosResponse } from 'axios';
+import { Response } from 'got/dist/source';
 
 type Server = {
 	name: string;
 	url: string;
 	default?: boolean;
 	getServerUrl?: string;
-	callback: (res: AxiosResponse<any, any>) => {
+	callback: (res: Response<string>) => {
 		success: boolean;
 		message: string;
 	};
@@ -17,14 +17,14 @@ export const servers: Array<Server> = [
 	{
 		name: 'anonfiles',
 		url: 'https://api.anonfiles.com/upload',
-		callback: res => ({ success: res.status == 200, message: res.status == 200 ? res.data.data.file.url.short : res.data.error.message }),
+		callback: res => ({ success: res.statusCode == 200, message: res.statusCode == 200 ? JSON.parse(res.body).data.file.url.short : JSON.parse(res.body).error.message }),
 		default: true,
 	},
 	{
 		name: 'gofile',
 		url: `https://${SERVER_PLACEHOLDER}.gofile.io/uploadFile`,
 		getServerUrl: 'https://api.gofile.io/getServer',
-		callback: res => ({ success: res.status == 200, message: res.status == 200 ? res.data.data.downloadPage : res.data.status }),
+		callback: res => ({ success: res.statusCode == 200, message: res.statusCode == 200 ? JSON.parse(res.body).data.downloadPage : JSON.parse(res.body).status }),
 	},
 ];
 
