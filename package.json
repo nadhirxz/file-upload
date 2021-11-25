@@ -1,0 +1,22 @@
+{
+	"name": "file-upload",
+	"version": "0.1.0",
+	"description": "Simple Node.js CLI tool to upload files",
+	"main": "lib/main.js",
+	"bin": "lib/main.js",
+	"scripts": {
+		"build": "tsc",
+		"dev": "ts-node src/index.ts"
+	},
+	"author": "Nadhir",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nadhirxz/file-upload.git"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/node": "^16.11.10",
+		"typescript": "^4.5.2"
+	}
+}
