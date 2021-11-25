@@ -1,12 +1,8 @@
 #!/usr/bin/env typescript
 import { Option, program } from 'commander';
-import axios from 'axios';
 import { fileExists } from './utils/files';
 import { findServer, servers, SERVER_PLACEHOLDER } from './utils/servers';
-import { createReadStream } from 'fs';
-import FormData = require('form-data');
-
-axios.defaults.validateStatus = () => true;
+import { get, upload } from './utils/requests';
 
 program
 	.version('0.1.0')
@@ -23,17 +19,15 @@ program
 	.parse();
 
 async function run(filename: string, server: string) {
-	let { url, getServer, callback } = findServer('name', server);
+	let { url, getServerUrl, callback } = findServer('name', server);
 
-	if (getServer) {
-		const { data } = await axios.get(getServer);
+	if (getServerUrl) {
+		const { data } = await get(getServerUrl);
 		if (data?.status == 'ok') url = url.replace(SERVER_PLACEHOLDER, data.data.server);
 	}
 
-	const data = new FormData();
-	data.append('file', createReadStream(filename));
+	const res = await upload(filename, url);
 
-	const res = await axios.post(url, data, { headers: data.getHeaders() });
 	const { success, message } = callback(res);
 	console.log(`${success ? 'url' : 'error'}: ${message}`);
 }

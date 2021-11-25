@@ -4,7 +4,7 @@ type Server = {
 	name: string;
 	url: string;
 	default?: boolean;
-	getServer?: string;
+	getServerUrl?: string;
 	callback: (res: AxiosResponse<any, any>) => {
 		success: boolean;
 		message: string;
@@ -23,7 +23,7 @@ export const servers: Array<Server> = [
 	{
 		name: 'gofile',
 		url: `https://${SERVER_PLACEHOLDER}.gofile.io/uploadFile`,
-		getServer: 'https://api.gofile.io/getServer',
+		getServerUrl: 'https://api.gofile.io/getServer',
 		callback: res => ({ success: res.status == 200, message: res.status == 200 ? res.data.data.downloadPage : res.data.status }),
 	},
 ];
