@@ -2,7 +2,7 @@
 import { Option, program } from 'commander';
 import axios from 'axios';
 import { fileExists } from './utils/files';
-import { findServer, servers } from './utils/servers';
+import { findServer, servers, SERVER_PLACEHOLDER } from './utils/servers';
 import { createReadStream } from 'fs';
 import FormData = require('form-data');
 
@@ -23,7 +23,12 @@ program
 	.parse();
 
 async function run(filename: string, server: string) {
-	let { url, callback } = findServer('name', server);
+	let { url, getServer, callback } = findServer('name', server);
+
+	if (getServer) {
+		const { data } = await axios.get(getServer);
+		if (data?.status == 'ok') url = url.replace(SERVER_PLACEHOLDER, data.data.server);
+	}
 
 	const data = new FormData();
 	data.append('file', createReadStream(filename));
