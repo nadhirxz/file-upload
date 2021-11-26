@@ -1,7 +1,7 @@
 import { createReadStream, lstatSync } from 'fs';
 import FormData = require('form-data');
 import got from 'got/dist/source';
-import { Bar } from 'cli-progress';
+import ProgressBar from './progress';
 
 export const get = (url: string) => got.get(url);
 
@@ -14,15 +14,7 @@ export const upload = async (filename: string, url: string) => {
 	const divider = 1024 * (inMB ? 1024 : 1);
 	const size = parseFloat(((filesize / divider) * 1024).toFixed(2));
 
-	const bar = new Bar({
-		format: `uploading [{bar}] {percentage}% | {value}/{total} ${inMB ? 'm' : 'k'}b | {speed} | Elapsed: {duration_formatted} | ETA: {eta_formatted}`,
-		barIncompleteChar: ' ',
-	});
-
-	bar.start(size, 0, { speed: 0 });
-
-	let time = new Date().getTime();
-	let uploaded = 0;
+	const bar = new ProgressBar(inMB, size, divider);
 
 	const res = await got
 		.post(url, {
@@ -30,17 +22,7 @@ export const upload = async (filename: string, url: string) => {
 			body: data,
 			throwHttpErrors: false,
 		})
-		.on('uploadProgress', progress => {
-			const transferred = progress.transferred;
-			const speed = (transferred - uploaded) / (new Date().getTime() - time);
+		.on('uploadProgress', progress => bar.progress(progress));
 
-			time = new Date().getTime();
-			uploaded = transferred;
-
-			bar.update(parseFloat((transferred / divider).toFixed(2)), {
-				speed: `${parseFloat((Number.isFinite(speed) ? (speed > 1024 ? speed / 1024 : speed) : 0).toFixed(2))} ${Number.isFinite(speed) && speed > 1024 ? 'm' : 'k'}b/s`,
-			});
-		});
-
-	return { res, bar, size };
+	return { res, bar };
 };

@@ -10,10 +10,9 @@ export default async function run(filename: string, server: string) {
 		if (body?.status == 'ok') url = url.replace(SERVER_PLACEHOLDER, body.data.server);
 	}
 
-	const { res, bar, size } = await upload(filename, url);
+	const { res, bar } = await upload(filename, url);
 
-	bar.update(size);
-	bar.stop();
+	bar.finish();
 
 	const { success, message } = callback(res);
 	console.log(`${success ? 'url' : 'error'}: ${message}${success ? ' (copied to clipboard)' : ''}`);
