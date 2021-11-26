@@ -2,7 +2,12 @@ import { get, upload } from './requests';
 import { findServer, SERVER_PLACEHOLDER } from './servers';
 import { writeSync } from 'clipboardy';
 
-export default async function run(filename: string, server: string) {
+interface Options {
+	server: string;
+	copy: boolean;
+}
+
+export default async function run(filename: string, { server, copy }: Options) {
 	let { url, getServerUrl, callback } = findServer('name', server);
 
 	if (getServerUrl) {
@@ -15,6 +20,6 @@ export default async function run(filename: string, server: string) {
 	bar.finish();
 
 	const { success, message } = callback(res);
-	console.log(`${success ? 'url' : 'error'}: ${message}${success ? ' (copied to clipboard)' : ''}`);
-	success && writeSync(message);
+	console.log(`${success ? 'url' : 'error'}: ${message}${copy && success ? ' (copied to clipboard)' : ''}`);
+	copy && success && writeSync(message);
 }
