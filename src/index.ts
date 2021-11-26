@@ -3,6 +3,7 @@ import { Option, program } from 'commander';
 import { fileExists } from './utils/files';
 import { findServer, servers, SERVER_PLACEHOLDER } from './utils/servers';
 import { get, upload } from './utils/requests';
+import { writeSync } from 'clipboardy';
 
 program
 	.version('0.1.0')
@@ -32,5 +33,6 @@ async function run(filename: string, server: string) {
 	bar.stop();
 
 	const { success, message } = callback(res);
-	console.log(`${success ? 'url' : 'error'}: ${message}`);
+	console.log(`${success ? 'url' : 'error'}: ${message}${success ? ' (copied to clipboard)' : ''}`);
+	success && writeSync(message);
 }
