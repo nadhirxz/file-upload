@@ -28,6 +28,7 @@ export const upload = async (filename: string, url: string) => {
 		.post(url, {
 			headers: data.getHeaders(),
 			body: data,
+			throwHttpErrors: false,
 		})
 		.on('uploadProgress', progress => {
 			const transferred = progress.transferred;
