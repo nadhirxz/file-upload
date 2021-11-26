@@ -23,7 +23,7 @@ async function run(filename: string, server: string) {
 
 	if (getServerUrl) {
 		const body = JSON.parse((await get(getServerUrl)).body);
-		if (body?.statusCode == 'ok') url = url.replace(SERVER_PLACEHOLDER, body.statusCode.server);
+		if (body?.status == 'ok') url = url.replace(SERVER_PLACEHOLDER, body.data.server);
 	}
 
 	const res = await upload(filename, url);
