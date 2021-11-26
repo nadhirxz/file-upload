@@ -26,7 +26,10 @@ async function run(filename: string, server: string) {
 		if (body?.status == 'ok') url = url.replace(SERVER_PLACEHOLDER, body.data.server);
 	}
 
-	const res = await upload(filename, url);
+	const { res, bar, size } = await upload(filename, url);
+
+	bar.update(size);
+	bar.stop();
 
 	const { success, message } = callback(res);
 	console.log(`${success ? 'url' : 'error'}: ${message}`);
