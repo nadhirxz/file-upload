@@ -1,5 +1,6 @@
-import { Bar } from 'cli-progress';
+import { Bar, Presets } from 'cli-progress';
 import { Progress } from 'got/dist/source';
+import { cyan } from 'colors';
 
 export default class ProgressBar {
 	bar: Bar;
@@ -7,10 +8,7 @@ export default class ProgressBar {
 	uploaded: number;
 
 	constructor(inMB: boolean, public size: number, public divider: number) {
-		this.bar = new Bar({
-			format: `uploading [{bar}] {percentage}% | {value}/{total} ${inMB ? 'm' : 'k'}b | {speed} | Elapsed: {duration_formatted} | ETA: {eta_formatted}`,
-			barIncompleteChar: ' ',
-		});
+		this.bar = new Bar({ format: `uploading [${cyan('{bar}')}] {percentage}% | {value}/{total} ${inMB ? 'm' : 'k'}b | {speed} | Elapsed: {duration_formatted} | ETA: {eta_formatted}` }, Presets.rect);
 		this.bar.start(size, 0, { speed: 0 });
 		this.time = new Date().getTime();
 		this.uploaded = 0;

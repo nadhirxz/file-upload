@@ -2,6 +2,7 @@ import { Option, program } from 'commander';
 import { fileExists } from './utils/files';
 import { findServer, servers } from './utils/servers';
 import run from './utils/run';
+import { bold, underline } from 'colors';
 
 program
 	.version('0.1.0')
@@ -11,6 +12,6 @@ program
 	.option('-nc, --no-copy', 'disable copying file url to clipboard after upload')
 	.action(filename => {
 		if (fileExists(filename)) return run(filename, program.opts());
-		console.log(`${filename} doesn't exist`);
+		console.log(bold.red(`error: ${underline(filename)} doesn't exist`));
 	})
 	.parse();
