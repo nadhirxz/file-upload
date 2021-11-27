@@ -1,15 +1,15 @@
 import { get, upload } from './requests';
-import { findServer, SERVER_PLACEHOLDER } from './servers';
+import { findHost, SERVER_PLACEHOLDER } from './hosts';
 import { writeSync } from 'clipboardy';
 import { bold, green, red } from 'colors';
 
 interface Options {
-	server: string;
+	host: string;
 	copy: boolean;
 }
 
-export default async function run(filename: string, { server, copy }: Options) {
-	let { url, getServerUrl, callback } = findServer('name', server);
+export default async function run(filename: string, { host, copy }: Options) {
+	let { url, getServerUrl, callback } = findHost('name', host);
 
 	if (getServerUrl) {
 		const body = JSON.parse((await get(getServerUrl)).body);

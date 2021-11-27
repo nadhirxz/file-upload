@@ -1,6 +1,6 @@
 import { Response } from 'got/dist/source';
 
-type Server = {
+type Host = {
 	name: string;
 	url: string;
 	default?: boolean;
@@ -13,7 +13,7 @@ type Server = {
 
 export const SERVER_PLACEHOLDER = '$$';
 
-export const servers: Array<Server> = [
+export const hosts: Array<Host> = [
 	{
 		name: 'anonfiles',
 		url: 'https://api.anonfiles.com/upload',
@@ -28,4 +28,4 @@ export const servers: Array<Server> = [
 	},
 ];
 
-export const findServer = (key: keyof Server, value: Server[keyof Server]) => servers.find(e => e[key] == value) || servers[0];
+export const findHost = (key: keyof Host, value: Host[keyof Host]) => hosts.find(e => e[key] == value) || hosts[0];
